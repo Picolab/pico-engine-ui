@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import logo from './logo.png';
-import Version from './components/Version/Version.js';
+import { isLoggedIn, setEntryDID, setEntryHost } from './config';
+import LoggedInApp from './components/LoggedInApp/LoggedInApp.js';
+import StartPage from './components/StartPage/StartPage.js';
+import './App.css';
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers';
-import './App.css';
 
 import promise from 'redux-promise';
 
@@ -24,17 +25,40 @@ const store = createStore(
 )
 
 class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      loggedIn: isLoggedIn()
+    }
+
+    this.loginChange = this.loginChange.bind(this);
+  }
+
+  loginChange(newDid, newHost) {
+    setEntryDID(newDid);
+    setEntryHost(newHost);
+    this.setState({
+      loggedIn: isLoggedIn()
+    });
+  }
+
+  renderPage() {
+    if(this.state.loggedIn){
+      return(
+        <LoggedInApp />
+      )
+    }
+    return(
+      <StartPage loginChange={this.loginChange}/>
+    )
+  }
+
   render() {
     return (
       <Provider store={store}>
         <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <Version />
-          </header>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
+          {this.renderPage()}
         </div>
       </Provider>
     );

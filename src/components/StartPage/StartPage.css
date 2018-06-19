@@ -1,0 +1,25 @@
+.loginPic {
+  background-size: auto !important;
+  height: 0;
+  padding-top: 33.25%;
+}
+
+.loginCard {
+  max-height: inherit;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loginPage{
+  height: 100%;
+}
+
+.loginInput{
+  margin-right: 10px !important;
+}
+
+.loginSubmit{
+  margin-top: 10px !important;
+}
