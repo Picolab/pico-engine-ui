@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Sidebar from '../Sidebar/Sidebar';
-import ClassicGrid from '../ClassicGrid/ClassicGrid';
+import PicoGrid from '../PicoGrid/PicoGrid';
 import Header from '../Header/Header'
 import './LoggedInApp.css';
 
@@ -10,10 +9,7 @@ class LoggedInApp extends Component {
     return (
       <div>
         <Header />
-        <div>
-          <Sidebar />
-          <ClassicGrid />
-        </div>
+        <PicoGrid />
       </div>
     );
   }

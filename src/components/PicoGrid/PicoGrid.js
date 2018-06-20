@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PicoCard from '../PicoCard/PicoCard';
 
-class Sidebar extends Component {
+class PicoGrid extends Component {
   render() {
     return (
       <div>
+        <PicoCard />
       </div>
     );
   }
@@ -19,4 +21,4 @@ const mapDispatchToProps = (dispatch) => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(PicoGrid);

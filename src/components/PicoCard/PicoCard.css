@@ -1,0 +1,6 @@
+/*
+setting display to inline-block makes the card fit its content, rather than taking up the screen width.
+*/
+.picoCard {
+  display: inline-block;
+}
