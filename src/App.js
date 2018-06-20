@@ -14,7 +14,7 @@ import promise from 'redux-promise';
 import { Map } from 'immutable';
 
 const initialState = Map({
-  "version": "Not Yet Retrieved"
+  //"version": "Not Yet Retrieved"
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

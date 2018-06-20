@@ -5,6 +5,8 @@ export function getEngineLoc(){
   return localStorage.getItem('engine_loc')
 }
 
+export const UIRulesetUrl = "https://raw.githubusercontent.com/Picolab/pico-engine-ui/master/krl/io.picolabs.ui";
+
 export function getEntryHost(){
   return localStorage.getItem('entry_host')
 }
@@ -22,7 +24,7 @@ export function setEntryDID(did){
 }
 
 //more validity checking should be added...
-function validEntryHost(){
+export function validEntryHost(){
   let entry_DID = localStorage.getItem('entry_host')
   if(entry_DID && entry_DID !== ''){
     return true;
@@ -31,7 +33,7 @@ function validEntryHost(){
 }
 
 //more validity checking should be added...
-function validEntryDID() {
+export function validEntryDID() {
   let entry_DID = localStorage.getItem('entry_DID')
   if(entry_DID && entry_DID !== ''){
     return true;
