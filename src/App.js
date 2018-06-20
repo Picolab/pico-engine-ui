@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { isLoggedIn, setEntryDID, setEntryHost } from './config';
+import { isLoggedIn, setEntryDID, setEntryHost, getEntryDID, getEntryHost } from './config';
 import LoggedInApp from './components/LoggedInApp/LoggedInApp.js';
 import StartPage from './components/StartPage/StartPage.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -49,7 +49,7 @@ class App extends Component {
   renderPage() {
     if(this.state.loggedIn){
       return(
-        <LoggedInApp />
+        <LoggedInApp entryDID={getEntryDID()} entryHost={getEntryHost()}/>
       )
     }
     return(

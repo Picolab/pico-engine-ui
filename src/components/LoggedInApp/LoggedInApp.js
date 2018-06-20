@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import PicoGrid from '../PicoGrid/PicoGrid';
 import Header from '../Header/Header'
 import './LoggedInApp.css';
@@ -13,6 +14,11 @@ class LoggedInApp extends Component {
       </div>
     );
   }
+}
+
+LoggedInApp.propTypes = {
+  entryDID: PropTypes.string.isRequired,
+  entryHost: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state) => {

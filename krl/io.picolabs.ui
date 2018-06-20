@@ -1,0 +1,10 @@
+ruleset io.picolabs.ui {
+  meta {
+    shares __testing
+  }
+  global {
+    __testing = { "queries": [  ],
+                  "events": [  ] }
+  }//end global
+  
+}//end ruleset
