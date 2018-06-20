@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Sidebar from '../Sidebar/Sidebar';
 import ClassicGrid from '../ClassicGrid/ClassicGrid';
+import Header from '../Header/Header'
+import './LoggedInApp.css';
 
 class LoggedInApp extends Component {
   render() {
     return (
       <div>
-        <Sidebar />
-        <ClassicGrid />
+        <Header />
+        <div>
+          <Sidebar />
+          <ClassicGrid />
+        </div>
       </div>
     );
   }
 }
-
-// <header className="App-header">
-//   <img src={logo} className="App-logo" alt="logo" />
-//   <Version />
-// </header>
 
 const mapStateToProps = (state) => {
   return {
