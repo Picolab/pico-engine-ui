@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { isLoggedIn, setEntryDID, setEntryHost } from './config';
 import LoggedInApp from './components/LoggedInApp/LoggedInApp.js';
 import StartPage from './components/StartPage/StartPage.js';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import './App.css';
 
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -23,6 +24,8 @@ const store = createStore(
   initialState,
   composeEnhancers(applyMiddleware(promise))
 )
+
+const theme = createMuiTheme();
 
 class App extends Component {
   constructor(props){
@@ -57,9 +60,11 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div className="App">
-          {this.renderPage()}
-        </div>
+        <MuiThemeProvider theme={theme}>
+          <div className="App">
+            {this.renderPage()}
+          </div>
+        </MuiThemeProvider>
       </Provider>
     );
   }

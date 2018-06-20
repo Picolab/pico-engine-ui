@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import SwipeableViews from 'react-swipeable-views';
+import { withStyles } from '@material-ui/core/styles';
 import './PicoCard.css';
 
 const tabsEnum = Object.freeze({
@@ -21,9 +22,9 @@ const tabsEnum = Object.freeze({
   logs: 2
 })
 
-function TabContainer(props) {
+function TabContainer(props, dir) {
   return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
+    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
       {props.children}
     </Typography>
   );
@@ -49,7 +50,7 @@ class ExpandedPico extends Component {
   }
 
   render() {
-    const { headerIndex } = this.state;
+    const { theme } = this.props;
     return (
       <div>
         <Card className="picoCard">
@@ -65,9 +66,16 @@ class ExpandedPico extends Component {
               <Tab label="Channels" />
               <Tab label="Logs" />
             </Tabs>
-            {headerIndex === tabsEnum.overview && <TabContainer><Overview/></TabContainer>}
-            {headerIndex === tabsEnum.channels && <TabContainer><Channels/></TabContainer>}
-            {headerIndex === tabsEnum.logs && <TabContainer><Logs/></TabContainer>}
+            <SwipeableViews
+              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+              index={this.state.headerIndex}
+              onChangeIndex={this.handleChangeIndex}
+            >
+              <TabContainer><Overview/></TabContainer>
+              <TabContainer><Channels/></TabContainer>
+              <TabContainer><Logs/></TabContainer>
+            </SwipeableViews>
+
           </CardContent>
           <CardActions>
             <Button size="small" color="primary" onClick={this.props.collapse}>Collapse</Button>
@@ -92,4 +100,4 @@ const mapDispatchToProps = (dispatch) => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpandedPico);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(null, { withTheme: true})(ExpandedPico));
