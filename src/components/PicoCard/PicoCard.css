@@ -4,3 +4,7 @@ setting display to inline-block makes the card fit its content, rather than taki
 .picoCard {
   display: inline-block;
 }
+
+.cardContainer {
+  display: inline-block;
+}

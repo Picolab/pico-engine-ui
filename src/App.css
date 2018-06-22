@@ -2,8 +2,21 @@
 
 }
 
+.fillHeight {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
 body{
   background-color: rgb(211,211,211);
+  height: 100%;
+}
+
+html {
+  height: 100%;
 }
 
 .App-logo {
@@ -16,6 +29,10 @@ body{
 
 .App-intro {
   font-size: large;
+}
+
+#root {
+  height: 100%;
 }
 
 @keyframes App-logo-spin {
