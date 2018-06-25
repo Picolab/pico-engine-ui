@@ -54,7 +54,7 @@ class PicoCardHeader extends Component {
           <Popper
             placement="bottom-end"
             eventsEnabled={this.state.open}
-            className="appearOnTop"
+            className={this.state.open ? "popperOpened" : "popperClosed"}
           >
             <ClickAwayListener onClickAway={this.handleClose}>
               <Grow in={this.state.open} id="menu-list-grow" style={{ transformOrigin: '0 0 0' }}>

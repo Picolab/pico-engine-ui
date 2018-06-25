@@ -17,6 +17,10 @@ setting display to inline-block makes the card fit its content, rather than taki
   padding-bottom: 0px !important;
 }
 
-.appearOnTop {
-  z-index: 1000
+.popperClosed {
+  pointer-events: none;
+}
+
+.popperOpened {
+  z-index: 1
 }
