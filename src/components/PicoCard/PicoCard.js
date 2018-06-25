@@ -33,13 +33,12 @@ class PicoCard extends Component {
   }
 
   onStop(e, data) {
-    console.log("event:", e);
-    console.log("data:", data);
+    // console.log("event:", e);
+    // console.log("data:", data);
   }
 
   render() {
     let position = this.props.position.toJS();
-    console.log("position", position);
     return (
       <div>
         <Draggable
@@ -47,7 +46,7 @@ class PicoCard extends Component {
           bounds=".scrollableView"
           defaultPosition={position}>
           <div className="cardContainer">
-            {!this.state.collapsed && <ExpandedPico name={this.props.name || "Loading..."} collapse={this.toggleCard}/>}
+            {!this.state.collapsed && <ExpandedPico picoID={this.props.picoID} collapse={this.toggleCard}/>}
             {this.state.collapsed && <CollapsedPico name={this.props.name || "Loading..."} expand={this.toggleCard}/>}
           </div>
         </Draggable>

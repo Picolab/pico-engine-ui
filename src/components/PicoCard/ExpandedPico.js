@@ -4,17 +4,15 @@ import PropTypes from 'prop-types';
 import Overview from './Overview';
 import Channels from './Channels';
 import Logs from './Logs';
+import PicoCardHeader from './PicoCardHeader';
 
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from '@material-ui/core/styles';
 import './PicoCard.css';
@@ -57,15 +55,7 @@ class ExpandedPico extends Component {
     return (
       <div>
         <Card className="picoCard">
-          <CardHeader
-            title={this.props.name}
-            action={
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
-            }
-            className="noBottomPadding"
-            />
+          <PicoCardHeader picoID={this.props.picoID}/>
           <CardContent className="noTopPadding">
             <Tabs
               value={this.state.headerIndex}
@@ -99,7 +89,7 @@ class ExpandedPico extends Component {
 }
 
 ExpandedPico.propTypes = {
-  name: PropTypes.string.isRequired,
+  picoID: PropTypes.string.isRequired,
   collapse: PropTypes.func.isRequired
 }
 
