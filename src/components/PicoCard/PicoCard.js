@@ -4,22 +4,31 @@ import PropTypes from 'prop-types';
 import ExpandedPico from './ExpandedPico';
 import CollapsedPico from './CollapsedPico';
 import Draggable from 'react-draggable';
+import { isCollapsed, getPosition, getName, getDID, getHost } from '../../reducers';
+import { retrieveName } from '../../actions';
 import './PicoCard.css';
 
 class PicoCard extends Component {
   constructor(props){
     super(props);
     this.state = {
-      expanded: props.expanded || true
+      collapsed: props.collapsed || true
     }
     this.toggleCard = this.toggleCard.bind(this);
     this.onStop = this.onStop.bind(this);
   }
 
+  componentWillMount() {
+    if(!this.props.name) {
+      //query for the name
+      this.props.retrievePicoName(this.props.DID, this.props.picoID, this.props.host);
+    }
+  }
+
   toggleCard() {
     //send an event to save the state..
     this.setState({
-      expanded: !this.state.expanded
+      collapsed: !this.state.collapsed
     })
   }
 
@@ -29,14 +38,17 @@ class PicoCard extends Component {
   }
 
   render() {
+    let position = this.props.position.toJS();
+    console.log("position", position);
     return (
       <div>
         <Draggable
           onStop={this.onStop}
-          bounds=".scrollableView">
+          bounds=".scrollableView"
+          defaultPosition={position}>
           <div className="cardContainer">
-            {this.state.expanded ? <ExpandedPico name="Test Name" collapse={this.toggleCard}/>
-                                  : <CollapsedPico name="Test Name" expand={this.toggleCard}/>}
+            {!this.state.collapsed && <ExpandedPico name={this.props.name || "Loading..."} collapse={this.toggleCard}/>}
+            {this.state.collapsed && <CollapsedPico name={this.props.name || "Loading..."} expand={this.toggleCard}/>}
           </div>
         </Draggable>
       </div>
@@ -45,16 +57,29 @@ class PicoCard extends Component {
 }
 
 PicoCard.propTypes = {
-  picoID: PropTypes.string.isRequired
+  picoID: PropTypes.string.isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  DID: PropTypes.string.isRequired,
+  host: PropTypes.string.isRequired,
+  name: PropTypes.string
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    collapsed: isCollapsed(state, ownProps.picoID),
+    position: getPosition(state, ownProps.picoID),
+    DID: getDID(state, ownProps.picoID),
+    host: getHost(state, ownProps.picoID),
+    name: getName(state, ownProps.picoID)
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    retrievePicoName: (DID, picoID, host) => {
+      dispatch(retrieveName(DID, picoID, host));
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PicoCard);

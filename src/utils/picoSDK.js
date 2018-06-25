@@ -31,3 +31,7 @@ export function installUIRuleset(DID, host) {
 export function getSettings(DID, host) {
   return query(DID, host, "io.picolabs.ui", "saved_settings", {});
 }
+
+export function getPicoName(DID, host) {
+  return query(DID, host, "io.picolabs.wrangler", "name", {});
+}

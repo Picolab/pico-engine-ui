@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux-immutable';
 import settingsReducer from './settingsReducer';
+import picosReducer from './picosReducer';
 import { List } from 'immutable';
 
 const rootReducer = combineReducers({
-  settings: settingsReducer
+  settings: settingsReducer,
+  picos: picosReducer
 });
 
 export default rootReducer;
@@ -29,6 +31,7 @@ export default rootReducer;
   //picos is the cached state of the application. Data that may change often or will be re-retrieved on page refresh will be stored here
   picos: {
     <picoID>: {
+      name: <name>,
       version: <versionNumber>,
       rulesets: ???,
       logs: ???,
@@ -91,6 +94,10 @@ export function getLogs(state, picoID) {
 
 export function getChannels(state, picoID) {
   return state.getIn(["picos", picoID, "channels"]);
+}
+
+export function getName(state, picoID) {
+  return state.getIn(["picos", picoID, "name"]);
 }
 
 //relationships selectors
