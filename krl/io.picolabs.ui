@@ -1,10 +1,27 @@
 ruleset io.picolabs.ui {
   meta {
-    shares __testing
+    shares __testing, saved_settings
   }
   global {
-    __testing = { "queries": [  ],
+    __testing = { "queries": [ {"name": "saved_settings"} ],
                   "events": [  ] }
+    saved_settings = function(){
+      ent:settings.defaultsTo({})
+    }
   }//end global
-  
+
+  rule initialize {
+    select when wrangler ruleset_added where event:attr("rids") >< meta:rid
+    always{
+      ent:settings := {}.put([meta:picoId], {
+        "picoID": meta:picoId,
+        "DID": meta:eci,
+        "host": meta:host,
+        "collapsed": true,
+        "position": {"x": 0, "y": 0},
+        "tab": 1
+      }) if not ent:settings
+    }
+  }
+
 }//end ruleset
