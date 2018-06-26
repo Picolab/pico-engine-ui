@@ -29,10 +29,22 @@ export function retrieveName(DID, picoID, host) {
   }
 }
 
+export function importChildren(DID, picoID, host) {
+  return {
+    type: ActionTypes.IMPORT_CHILDREN,
+    payload: {
+      DID,
+      picoID,
+      host
+    }
+  }
+}
+
 const ActionTypes = {
   RETRIEVE_VERSION: 'retrieve_version',
   RETRIEVE_SETTINGS: 'retrieve_settings',
-  RETRIEVE_PICO_NAME: 'retrieve_pico_name'
+  RETRIEVE_PICO_NAME: 'retrieve_pico_name',
+  IMPORT_CHILDREN: 'import_children'
 }
 
 export default ActionTypes;

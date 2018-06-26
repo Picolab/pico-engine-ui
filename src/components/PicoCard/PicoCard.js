@@ -47,7 +47,7 @@ class PicoCard extends Component {
           defaultPosition={position}>
           <div className="cardContainer">
             {!this.state.collapsed && <ExpandedPico picoID={this.props.picoID} collapse={this.toggleCard}/>}
-            {this.state.collapsed && <CollapsedPico name={this.props.name || "Loading..."} expand={this.toggleCard}/>}
+            {this.state.collapsed && <CollapsedPico picoID={this.props.picoID} expand={this.toggleCard}/>}
           </div>
         </Draggable>
       </div>

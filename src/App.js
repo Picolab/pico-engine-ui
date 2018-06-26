@@ -11,6 +11,10 @@ import rootReducer from './reducers';
 
 import promise from 'redux-promise';
 
+//redux-saga
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas';
+
 import { Map } from 'immutable';
 
 const initialState = Map({
@@ -19,11 +23,15 @@ const initialState = Map({
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
   rootReducer,
   initialState,
-  composeEnhancers(applyMiddleware(promise))
+  composeEnhancers(applyMiddleware(promise, sagaMiddleware))
 )
+
+sagaMiddleware.run(rootSaga);
 
 const theme = createMuiTheme();
 

@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getName } from '../../reducers';
+import ImportSubs from './ImportSubs';
+import ImportChildren from './ImportChildren';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import UnfoldMore from '@material-ui/icons/UnfoldMore';
 import './PicoCard.css';
 
 class CollapsedPico extends Component {
@@ -20,7 +24,11 @@ class CollapsedPico extends Component {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary" onClick={this.props.expand}>Expand</Button>
+            <IconButton size="small" color="primary" onClick={this.props.expand}>
+              <UnfoldMore />
+            </IconButton>
+            <ImportSubs picoID={this.props.picoID}/>
+            <ImportChildren picoID={this.props.picoID}/>
           </CardActions>
         </Card>
       </div>
@@ -29,12 +37,13 @@ class CollapsedPico extends Component {
 }
 
 CollapsedPico.propTypes = {
-  name: PropTypes.string.isRequired,
+  picoID: PropTypes.string.isRequired,
   expand: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    name: getName(state, ownProps.picoID) || "Loading..."
   }
 }
 
