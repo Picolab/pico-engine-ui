@@ -15,7 +15,7 @@ class LoggedInApp extends Component {
   loadSettings() {
     let installPromise = installUIRuleset(this.props.entryDID, this.props.entryHost);
     installPromise.then((resp) => {
-      this.props.retrieveSettings(this.props.entryDID, this.props.entryHost);
+      this.props.retrieveSettings();
     }).catch((error) => {
       console.error(error);
     })
@@ -43,8 +43,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    retrieveSettings: (DID, host) => {
-      dispatch(retrieveSettings(DID, host))
+    retrieveSettings: () => {
+      dispatch(retrieveSettings())
     }
   }
 }

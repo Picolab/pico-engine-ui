@@ -32,6 +32,14 @@ export function getSettings(DID, host) {
   return query(DID, host, "io.picolabs.ui", "saved_settings", {});
 }
 
+export function newSettingsEntry(entryDID, entryHost, picoID, picoDID, picoHost) {
+  return signalEvent(entryDID, entryHost, "picolabs_ui", "new_settings_entry", { picoID, host: picoHost, DID: picoDID });
+}
+
 export function getPicoName(DID, host) {
   return query(DID, host, "io.picolabs.wrangler", "name", {});
+}
+
+export function getChildren(DID, host) {
+  return query(DID, host, "io.picolabs.wrangler", "children", {});
 }

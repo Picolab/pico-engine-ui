@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getEngineLoc } from '../config.js';
+import { getEngineLoc, getEntryDID, getEntryHost } from '../config';
 import { getSettings, getPicoName } from '../utils/picoSDK';
 
 export function retrieveVersion(){
@@ -10,8 +10,8 @@ export function retrieveVersion(){
   }
 }
 
-export function retrieveSettings(DID, host) {
-  const promise = getSettings(DID, host)
+export function retrieveSettings() {
+  const promise = getSettings(getEntryDID(), getEntryHost())
   return {
     type: ActionTypes.RETRIEVE_SETTINGS,
     payload: promise

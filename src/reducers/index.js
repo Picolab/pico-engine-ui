@@ -48,6 +48,10 @@ export default rootReducer;
 
 
 //settings selectors
+export function getSettings(state) {
+  return state.get("settings");
+}
+
 export function getDID(state, picoID) {
   return state.getIn(["settings", picoID, "DID"]);
 }

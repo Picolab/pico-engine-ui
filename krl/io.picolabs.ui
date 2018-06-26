@@ -5,22 +5,46 @@ ruleset io.picolabs.ui {
   global {
     __testing = { "queries": [ {"name": "saved_settings"} ],
                   "events": [  ] }
-    saved_settings = function(){
+    saved_settings = function() {
       ent:settings.defaultsTo({})
+    }
+
+    format_settings_entry = function(picoID, DID, host, position) {
+      {
+        "picoID": picoID,
+        "DID": DID,
+        "host": host,
+        "collapsed": true,
+        "position": position || { "x": 0, "y": 0 },
+        "tab": 0
+      }
     }
   }//end global
 
   rule initialize {
     select when wrangler ruleset_added where event:attr("rids") >< meta:rid
     always{
-      ent:settings := {}.put([meta:picoId], {
-        "picoID": meta:picoId,
-        "DID": meta:eci,
-        "host": meta:host,
-        "collapsed": true,
-        "position": {"x": 0, "y": 0},
-        "tab": 1
-      }) if not ent:settings
+      ent:settings := {}.put([meta:picoId],
+        format_settings_entry(meta:picoId, meta:eci, meta:host)
+      ) if not ent:settings
+    }
+  }
+
+  rule addSettingsEntry {
+    select when picolabs_ui new_settings_entry
+    pre{
+      picoID = event:attr("picoID");
+      DID = event:attr("DID");
+      host = event:attr("host");
+      position = event:attr("position");
+    }
+    if picoID && DID && host then
+      noop()
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
     }
   }
 
