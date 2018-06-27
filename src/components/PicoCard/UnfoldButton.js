@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { importChildren } from '../../actions';
-import { getDID, getHost } from '../../reducers';
 
 import IconButton from '@material-ui/core/IconButton';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
