@@ -40,17 +40,15 @@ class PicoCard extends Component {
   render() {
     let position = this.props.position.toJS();
     return (
-      <div>
-        <Draggable
-          onStop={this.onStop}
-          bounds=".scrollableView"
-          defaultPosition={position}>
-          <div className="cardContainer">
-            {!this.state.collapsed && <ExpandedPico picoID={this.props.picoID} collapse={this.toggleCard}/>}
-            {this.state.collapsed && <CollapsedPico picoID={this.props.picoID} expand={this.toggleCard}/>}
-          </div>
-        </Draggable>
-      </div>
+      <Draggable
+        onStop={this.onStop}
+        bounds=".scrollableView"
+        defaultPosition={position}>
+        <div className="cardContainer">
+          {!this.state.collapsed && <ExpandedPico picoID={this.props.picoID} collapse={this.toggleCard}/>}
+          {this.state.collapsed && <CollapsedPico picoID={this.props.picoID} expand={this.toggleCard}/>}
+        </div>
+      </Draggable>
     );
   }
 }

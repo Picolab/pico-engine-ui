@@ -10,7 +10,7 @@ class PicoGrid extends Component {
     let toDisplay = [];
     this.props.picoList.forEach(picoID => {
       toDisplay.push(
-        <div key={picoID}>
+        <div key={picoID} className="noHeight">
           <PicoCard picoID={picoID}/>
         </div>)
     });

@@ -41,7 +41,7 @@ class ImportChildren extends Component {
     return (
       <Tooltip
         enterDelay={300}
-        id="tooltip-controlled"
+        id={"importChildren" + this.props.picoId}
         leaveDelay={300}
         onClose={this.handleTooltipClose}
         onOpen={this.handleTooltipOpen}
