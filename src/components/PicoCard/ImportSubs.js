@@ -38,16 +38,17 @@ class ImportSubs extends Component {
   }
 
   render() {
+    const toolTipClass = this.state.open ? "" : "hidden";
     return (
       <Tooltip
         enterDelay={300}
         id={"importSubs" + this.props.picoId}
-        leaveDelay={300}
         onClose={this.handleTooltipClose}
         onOpen={this.handleTooltipOpen}
         open={this.state.open}
         placement="bottom"
         title="Display Subscriptions"
+        classes={{tooltip: toolTipClass}}
       >
         <IconButton size="small" onClick={this.handleClick}>
           <PeopleOutline />

@@ -24,3 +24,7 @@ setting display to inline-block makes the card fit its content, rather than taki
 .popperOpened {
   z-index: 1
 }
+
+.hidden {
+  display: none;
+}
