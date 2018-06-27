@@ -36,6 +36,10 @@ export function newSettingsEntry(entryDID, entryHost, picoID, picoDID, picoHost)
   return signalEvent(entryDID, entryHost, "picolabs_ui", "new_settings_entry", { picoID, host: picoHost, DID: picoDID });
 }
 
+export function removeSettingsEntry(entryDID, entryHost, picoID) {
+  return signalEvent(entryDID, entryHost, "picolabs_ui", "removed_settings_entry", { picoID });
+}
+
 export function getPicoName(DID, host) {
   return query(DID, host, "io.picolabs.wrangler", "name", {});
 }

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { getName } from '../../reducers';
 import ImportSubs from './ImportSubs';
 import ImportChildren from './ImportChildren';
+import RemoveFromView from './RemoveFromView';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -29,6 +30,7 @@ class CollapsedPico extends Component {
             </IconButton>
             <ImportSubs picoID={this.props.picoID}/>
             <ImportChildren picoID={this.props.picoID}/>
+            <RemoveFromView picoID={this.props.picoID}/>
           </CardActions>
         </Card>
       </div>
