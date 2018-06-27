@@ -5,7 +5,7 @@ import ExpandedPico from './ExpandedPico';
 import CollapsedPico from './CollapsedPico';
 import Draggable from 'react-draggable';
 import { isCollapsed, getPosition, getName, getDID, getHost } from '../../reducers';
-import { retrieveName } from '../../actions';
+import { retrieveName, removePicoFromView, importChildren, importSubs } from '../../actions';
 import './PicoCard.css';
 
 class PicoCard extends Component {
@@ -16,6 +16,8 @@ class PicoCard extends Component {
     }
     this.toggleCard = this.toggleCard.bind(this);
     this.onStop = this.onStop.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentWillMount() {
@@ -37,6 +39,18 @@ class PicoCard extends Component {
     // console.log("data:", data);
   }
 
+  //NOTE: if the event is a double click, this function is called twice. There is no such thing as onSingleClick
+  handleClick(e) {
+    if(e.shiftKey){
+      this.props.removeFromView(this.props.DID, this.props.picoID, this.props.host);
+    }
+  }
+
+  handleDoubleClick(e) {
+    this.props.retrieveChildren(this.props.DID, this.props.picoID, this.props.host);
+    this.props.retrieveSubs(this.props.DID, this.props.picoID, this.props.host);
+  }
+
   render() {
     let position = this.props.position.toJS();
     return (
@@ -44,7 +58,7 @@ class PicoCard extends Component {
         onStop={this.onStop}
         bounds=".scrollableView"
         defaultPosition={position}>
-        <div className="cardContainer">
+        <div className="cardContainer" onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
           {!this.state.collapsed && <ExpandedPico picoID={this.props.picoID} collapse={this.toggleCard}/>}
           {this.state.collapsed && <CollapsedPico picoID={this.props.picoID} expand={this.toggleCard}/>}
         </div>
@@ -58,6 +72,7 @@ PicoCard.propTypes = {
   collapsed: PropTypes.bool.isRequired,
   DID: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
+  removeFromView: PropTypes.func.isRequired,
   name: PropTypes.string
 }
 
@@ -75,6 +90,15 @@ const mapDispatchToProps = (dispatch) => {
   return {
     retrievePicoName: (DID, picoID, host) => {
       dispatch(retrieveName(DID, picoID, host));
+    },
+    removeFromView: (DID, picoID, host) => {
+      dispatch(removePicoFromView(DID, picoID, host));
+    },
+    retrieveChildren: (DID, picoID, host) => {
+      dispatch(importChildren(DID, picoID, host));
+    },
+    retrieveSubs: (DID, picoID, host) => {
+      dispatch(importSubs(DID, picoID, host));
     }
   }
 }
