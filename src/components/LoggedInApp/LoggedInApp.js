@@ -5,9 +5,23 @@ import PicoGrid from '../PicoGrid/PicoGrid';
 import Header from '../Header/Header';
 import { installUIRuleset } from '../../utils/picoSDK';
 import { retrieveSettings } from '../../actions';
+import Sidebar from '../Sidebar/Sidebar.js';
 import './LoggedInApp.css';
 
 class LoggedInApp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+       sidebarOpen : false
+    };
+
+    this.sidebarHandle=this.sidebarHandle.bind(this);
+  }
+
+  sidebarHandle() {
+    this.setState({sidebarOpen : !this.state.sidebarOpen});
+  }
+
   componentWillMount(){
     this.loadSettings();
   }
@@ -24,7 +38,10 @@ class LoggedInApp extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <div className="appBar">
+          <Header logoutButton={this.props.logoutButton} handle={this.sidebarHandle} />
+        </div>
+        <Sidebar handle={this.sidebarHandle} sidebarOpen={this.state.sidebarOpen} />
         <PicoGrid />
       </div>
     );
