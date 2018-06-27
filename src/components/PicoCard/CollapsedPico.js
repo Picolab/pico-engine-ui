@@ -5,13 +5,12 @@ import { getName } from '../../reducers';
 import ImportSubs from './ImportSubs';
 import ImportChildren from './ImportChildren';
 import RemoveFromView from './RemoveFromView';
+import UnfoldButton from './UnfoldButton';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import UnfoldMore from '@material-ui/icons/UnfoldMore';
 import './PicoCard.css';
 
 class CollapsedPico extends Component {
@@ -25,9 +24,7 @@ class CollapsedPico extends Component {
             </Typography>
           </CardContent>
           <CardActions>
-            <IconButton size="small" color="primary" onClick={this.props.expand}>
-              <UnfoldMore />
-            </IconButton>
+            <UnfoldButton onClick={this.props.expand} type="Expand"/>
             <ImportSubs picoID={this.props.picoID}/>
             <ImportChildren picoID={this.props.picoID}/>
             <RemoveFromView picoID={this.props.picoID}/>
