@@ -40,6 +40,14 @@ export function getPicoName(DID, host) {
   return query(DID, host, "io.picolabs.wrangler", "name", {});
 }
 
+export function getPicoId(DID, host) {
+  return query(DID, host, "io.picolabs.wrangler", "id", {});
+}
+
 export function getChildren(DID, host) {
   return query(DID, host, "io.picolabs.wrangler", "children", {});
+}
+
+export function getSubs(DID, host) {
+  return query(DID, host, "io.picolabs.subscription", "established", {});
 }

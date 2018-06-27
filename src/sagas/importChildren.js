@@ -5,7 +5,6 @@ import { getEntryDID, getEntryHost } from '../config';
 import { retrieveSettings } from '../actions';
 
 export default function* importChildren(action) {
-  console.log("action in saga!", action);
   if(action.payload && action.payload.DID && action.payload.host) {
     try {
       //query for wrangler children
@@ -30,7 +29,7 @@ export default function* importChildren(action) {
           alert("All child picos are already displayed!");
         }
       }else {
-        console.error("data in result does not contain an array! data:", children);
+        console.error("data in result does not contain an array (importChildren saga)! data:", children);
       }
     }catch(e) {
       console.error(e);

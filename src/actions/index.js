@@ -40,11 +40,23 @@ export function importChildren(DID, picoID, host) {
   }
 }
 
+export function importSubs(DID, picoID, host) {
+  return {
+    type: ActionTypes.IMPORT_SUBS,
+    payload: {
+      DID,
+      picoID,
+      host
+    }
+  }
+}
+
 const ActionTypes = {
   RETRIEVE_VERSION: 'retrieve_version',
   RETRIEVE_SETTINGS: 'retrieve_settings',
   RETRIEVE_PICO_NAME: 'retrieve_pico_name',
-  IMPORT_CHILDREN: 'import_children'
+  IMPORT_CHILDREN: 'import_children',
+  IMPORT_SUBS: 'import_subs'
 }
 
 export default ActionTypes;
