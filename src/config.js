@@ -48,3 +48,8 @@ export function isLoggedIn(){
   }
   return false;
 }
+
+export function logout() {
+  localStorage.setItem('entry_DID', '');
+  localStorage.setItem('entry_host', '');
+}
