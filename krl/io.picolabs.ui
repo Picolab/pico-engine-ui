@@ -4,7 +4,7 @@ ruleset io.picolabs.ui {
   }
   global {
     __testing = { "queries": [ {"name": "saved_settings"} ],
-                  "events": [  ] }
+                  "events": [ {"domain" : "picolabs_ui", "type" : "update_settings_position", "attrs" : ["picoID", "x", "y"]} ] }
     saved_settings = function() {
       ent:settings.defaultsTo({})
     }
@@ -47,5 +47,24 @@ ruleset io.picolabs.ui {
         attributes event:attrs
     }
   }
+
+    rule updateSettingsPosition {
+    select when picolabs_ui update_settings_position
+    pre{
+      picoID = event:attr("picoID");
+      DID = ent:settings{[picoID, "DID"]};
+      host = ent:settings{[picoID, "host"]};
+      position = { "x" : event:attr("x").as("Number"), "y" : event:attr("y").as("Number") };
+    }
+    if picoID && position then
+      noop()
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
+    }
+  }
+
 
 }//end ruleset

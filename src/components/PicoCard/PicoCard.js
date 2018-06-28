@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import ExpandedPico from './ExpandedPico';
 import CollapsedPico from './CollapsedPico';
 import Draggable from 'react-draggable';
 import { isCollapsed, getPosition, getName, getDID, getHost } from '../../reducers';
 import { retrieveName } from '../../actions';
+import { updateSettingsPosition } from '../../actions/index';
 import './PicoCard.css';
 
 class PicoCard extends Component {
@@ -33,8 +35,9 @@ class PicoCard extends Component {
   }
 
   onStop(e, data) {
-    // console.log("event:", e);
-    // console.log("data:", data);
+    let x = data.x;
+    let y = data.y;
+    this.props.action.updateSettingsPosition(this.props.picoID, x, y);
   }
 
   render() {
@@ -71,11 +74,14 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
+
+
 const mapDispatchToProps = (dispatch) => {
   return {
     retrievePicoName: (DID, picoID, host) => {
       dispatch(retrieveName(DID, picoID, host));
-    }
+    },
+    action: bindActionCreators({updateSettingsPosition : updateSettingsPosition}, dispatch)
   }
 }
 

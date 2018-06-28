@@ -51,12 +51,24 @@ export function importSubs(DID, picoID, host) {
   }
 }
 
+export function updateSettingsPosition(picoID, x, y) {
+  return {
+    type: ActionTypes.UPDATE_POSITION,
+    payload: {
+      picoID,
+      x,
+      y
+    }
+  }
+}
+
 const ActionTypes = {
   RETRIEVE_VERSION: 'retrieve_version',
   RETRIEVE_SETTINGS: 'retrieve_settings',
   RETRIEVE_PICO_NAME: 'retrieve_pico_name',
   IMPORT_CHILDREN: 'import_children',
-  IMPORT_SUBS: 'import_subs'
+  IMPORT_SUBS: 'import_subs',
+  UPDATE_POSITION: 'update_position'
 }
 
 export default ActionTypes;

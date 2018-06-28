@@ -5,11 +5,13 @@ import { getEntryDID, getEntryHost } from '../config';
 import { retrieveSettings } from '../actions';
 
 export default function* importChildren(action) {
+  console.log("action in import Children!", action);
   if(action.payload && action.payload.DID && action.payload.host) {
     try {
       //query for wrangler children
       const result = yield call(getChildren, action.payload.DID, action.payload.host);
       const children = result.data;
+      console.log("retrieved children: ", children);
       if(children && Array.isArray(children)) {
         //foreach child that doesn't already exist in our app, create a new entry in the settings entity variable on the entry pico
         const settings = yield select(getSettings); //remember that this returns an Immutable JS Map
