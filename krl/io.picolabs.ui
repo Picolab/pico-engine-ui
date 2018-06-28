@@ -24,9 +24,7 @@ ruleset io.picolabs.ui {
   rule initialize {
     select when wrangler ruleset_added where event:attr("rids") >< meta:rid
     always{
-      ent:settings := {}.put([meta:picoId],
-        format_settings_entry(meta:picoId, meta:eci, meta:host)
-      ) if not ent:settings
+      ent:settings{[meta:picoId]} := format_settings_entry(meta:picoId, meta:eci, meta:host) if (not ent:settings || not ent:settings{[meta:picoId]}) //this guard statement prevents overwriting the entry pico's setting variable being overwritten, and also prevents accidentally removing the entry pico from view
     }
   }
 
@@ -39,7 +37,7 @@ ruleset io.picolabs.ui {
       position = event:attr("position");
     }
     if picoID && DID && host then
-      noop()
+      send_directive("adding pico " + picoID + " to settings")
     fired{
       ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position)
     }else{
@@ -48,7 +46,8 @@ ruleset io.picolabs.ui {
     }
   }
 
-    rule updateSettingsPosition {
+
+  rule updateSettingsPosition {
     select when picolabs_ui update_settings_position
     pre{
       picoID = event:attr("picoID");
@@ -66,5 +65,18 @@ ruleset io.picolabs.ui {
     }
   }
 
-
+  rule deleteSettingsEntry {
+    select when picolabs_ui removed_settings_entry
+    pre{
+      picoID = event:attr("picoID");
+    }
+    if picoID && picoID != meta:picoId then //don't remove the entry pico from view...
+      send_directive("deleting pico " + picoID + " from settings")
+    fired{
+      clear ent:settings{[picoID]}
+    }else{
+      raise picolabs_ui event "failed_entry_removal"
+      attributes event:attrs
+    }
+  }
 }//end ruleset

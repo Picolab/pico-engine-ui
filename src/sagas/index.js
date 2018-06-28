@@ -4,12 +4,15 @@ import { takeEvery } from 'redux-saga/effects';
 import importChildren from './importChildren';
 import importSubs from './importSubs';
 import updatePosition from './updatePosition';
+import removePicoFromView from './removePicoFromView';
 
 export default function*  rootSaga() {
   yield all([
     watchImportChildren(),
     watchImportSubs(),
-    watchUpdatePosition()
+
+    watchUpdatePosition(),
+    watchRemoveFromView()
   ])
 };
 
@@ -21,6 +24,11 @@ export function* watchImportSubs() {
   yield takeEvery(ActionTypes.IMPORT_SUBS, importSubs);
 };
 
+
 export function* watchUpdatePosition() {
   yield takeEvery(ActionTypes.UPDATE_POSITION, updatePosition);
 };
+
+export function* watchRemoveFromView() {
+  yield takeEvery(ActionTypes.REMOVE_FROM_VIEW, removePicoFromView)
+}

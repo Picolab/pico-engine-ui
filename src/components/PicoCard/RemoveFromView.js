@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { importChildren } from '../../actions';
+import { removePicoFromView } from '../../actions';
 import { getDID, getHost } from '../../reducers';
 
 import IconButton from '@material-ui/core/IconButton';
-import People from '@material-ui/icons/People';
+import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 import Tooltip from '@material-ui/core/Tooltip';
 
-class ImportChildren extends Component {
+class RemoveFromView extends Component {
   constructor(props) {
     super(props);
 
@@ -34,7 +34,7 @@ class ImportChildren extends Component {
   }
 
   handleClick() {
-    this.props.retrieveChildren(this.props.DID, this.props.picoID, this.props.host);
+    this.props.removeFromView(this.props.DID, this.props.picoID, this.props.host);
   }
 
   render() {
@@ -42,27 +42,27 @@ class ImportChildren extends Component {
     return (
       <Tooltip
         enterDelay={300}
-        id={"importChildren" + this.props.picoId}
+        id={"remove" + this.props.picoId}
         onClose={this.handleTooltipClose}
         onOpen={this.handleTooltipOpen}
         open={this.state.open}
         placement="bottom"
-        title="Display Children"
+        title="Remove Pico From View"
         classes={{tooltip: toolTipClass}}
       >
-        <IconButton size="small" color="primary" onClick={this.handleClick}>
-          <People />
+        <IconButton size="small" color="secondary" onClick={this.handleClick}>
+          <RemoveCircleOutline />
         </IconButton>
       </Tooltip>
     );
   }
 }
 
-ImportChildren.propTypes = {
+RemoveFromView.propTypes = {
   picoID: PropTypes.string.isRequired,
   DID: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
-  retrieveChildren: PropTypes.func.isRequired
+  removeFromView: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -74,10 +74,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    retrieveChildren: (DID, picoID, host) => {
-      dispatch(importChildren(DID, picoID, host));
+    removeFromView: (DID, picoID, host) => {
+      dispatch(removePicoFromView(DID, picoID, host));
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImportChildren);
+export default connect(mapStateToProps, mapDispatchToProps)(RemoveFromView);

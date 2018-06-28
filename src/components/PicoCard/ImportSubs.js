@@ -50,7 +50,7 @@ class ImportSubs extends Component {
         title="Display Subscriptions"
         classes={{tooltip: toolTipClass}}
       >
-        <IconButton size="small" onClick={this.handleClick}>
+        <IconButton size="small" color="primary" onClick={this.handleClick}>
           <PeopleOutline />
         </IconButton>
       </Tooltip>
@@ -61,7 +61,8 @@ class ImportSubs extends Component {
 ImportSubs.propTypes = {
   picoID: PropTypes.string.isRequired,
   DID: PropTypes.string.isRequired,
-  host: PropTypes.string.isRequired
+  host: PropTypes.string.isRequired,
+  retrieveSubs: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {

@@ -36,8 +36,13 @@ export function newSettingsEntry(entryDID, entryHost, picoID, picoDID, picoHost)
   return signalEvent(entryDID, entryHost, "picolabs_ui", "new_settings_entry", { picoID, host: picoHost, DID: picoDID });
 }
 
+
 export function updateSettingsPosition(entryDID, entryHost, picoID, x, y) {//this function will update the pico's position
   return signalEvent(entryDID, entryHost, "picolabs_ui", "update_settings_position", { picoID, x, y });
+}
+
+export function removeSettingsEntry(entryDID, entryHost, picoID) {
+  return signalEvent(entryDID, entryHost, "picolabs_ui", "removed_settings_entry", { picoID });
 }
 
 export function getPicoName(DID, host) {

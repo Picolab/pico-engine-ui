@@ -7,12 +7,12 @@ import Logs from './Logs';
 import PicoCardHeader from './PicoCardHeader';
 import ImportSubs from './ImportSubs';
 import ImportChildren from './ImportChildren';
+import RemoveFromView from './RemoveFromView';
+import UnfoldButton from './UnfoldButton';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
-import UnfoldLess from '@material-ui/icons/UnfoldLess';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -83,11 +83,10 @@ class ExpandedPico extends Component {
 
           </CardContent>
           <CardActions>
-            <IconButton size="small" color="primary" onClick={this.props.collapse}>
-              <UnfoldLess />
-            </IconButton>
+            <UnfoldButton onClick={this.props.collapse} type="Collapse"/>
             <ImportSubs picoID={this.props.picoID}/>
             <ImportChildren picoID={this.props.picoID}/>
+            <RemoveFromView picoID={this.props.picoID}/>
           </CardActions>
         </Card>
       </div>
