@@ -63,6 +63,26 @@ export function updateSettingsPosition(picoID, x, y) {
   }
 }
 
+export function updateSettingsCollapsed(picoID, collapsed) {
+  return {
+    type: ActionTypes.UPDATE_COLLAPSED,
+    payload: {
+      picoID,
+      collapsed
+    }
+  }
+}
+
+export function updateSettingsTab(picoID, tab) {
+  return {
+    type: ActionTypes.UPDATE_TAB,
+    payload: {
+      picoID,
+      tab
+    }
+  }
+}
+
 export function removePicoFromView(DID, picoID, host) {
   return {
     type: ActionTypes.REMOVE_FROM_VIEW,
@@ -81,7 +101,9 @@ const ActionTypes = {
   IMPORT_CHILDREN: 'import_children',
   IMPORT_SUBS: 'import_subs',
   UPDATE_POSITION: 'update_position',
-  REMOVE_FROM_VIEW: 'remove_from_view'
+  REMOVE_FROM_VIEW: 'remove_from_view',
+  UPDATE_COLLAPSED: 'update_collapsed',
+  UPDATE_TAB: 'update_tab'
 }
 
 export default ActionTypes;

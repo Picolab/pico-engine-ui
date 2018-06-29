@@ -4,19 +4,19 @@ ruleset io.picolabs.ui {
   }
   global {
     __testing = { "queries": [ {"name": "saved_settings"} ],
-                  "events": [ {"domain" : "picolabs_ui", "type" : "update_settings_position", "attrs" : ["picoID", "x", "y"]} ] }
+                  "events": [ {"domain" : "picolabs_ui", "type" : "update_settings_tab", "attrs" : ["picoID", "tab"] } ] }
     saved_settings = function() {
       ent:settings.defaultsTo({})
     }
 
-    format_settings_entry = function(picoID, DID, host, position) {
+    format_settings_entry = function(picoID, DID, host, position, tab, collapsed) {
       {
         "picoID": picoID,
         "DID": DID,
         "host": host,
-        "collapsed": true,
+        "collapsed": collapsed.defaultsTo(true),
         "position": position || { "x": 0, "y": 0 },
-        "tab": 0
+        "tab": tab || 0
       }
     }
   }//end global
@@ -53,12 +53,56 @@ ruleset io.picolabs.ui {
       picoID = event:attr("picoID");
       DID = ent:settings{[picoID, "DID"]};
       host = ent:settings{[picoID, "host"]};
+      tab = ent:settings{[picoID, "tab"]};
+      collapsed = ent:settings{[picoID, "collapsed"]};
       position = { "x" : event:attr("x").as("Number"), "y" : event:attr("y").as("Number") };
     }
     if picoID && position then
       noop()
     fired{
-      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position)
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position, tab, collapsed)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
+    }
+  }
+
+  rule updateSettingsCollapsed {
+    select when picolabs_ui update_settings_collapsed
+    pre{
+      picoID = event:attr("picoID");
+      DID = ent:settings{[picoID, "DID"]};
+      host = ent:settings{[picoID, "host"]};
+      tab = ent:settings{[picoID, "tab"]};
+      collapsed = event:attr("collapsed").as("Boolean");
+      position = ent:settings{[picoID, "position"]};
+
+    }
+    if picoID && not collapsed.isnull() then
+      noop()
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position, tab, collapsed)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
+    }
+  }
+
+  rule updateSettingsTab {
+    select when picolabs_ui update_settings_tab
+    pre{
+      picoID = event:attr("picoID");
+      DID = ent:settings{[picoID, "DID"]};
+      host = ent:settings{[picoID, "host"]};
+      tab = event:attr("tab").as("Number");
+      collapsed = ent:settings{[picoID, "collapsed"]};
+      position = ent:settings{[picoID, "position"]};
+
+    }
+    if picoID && not tab.isnull() then
+      noop()
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position, tab, collapsed)
     }else{
       raise picolabs_ui event "failed_entry_addition"
         attributes event:attrs
