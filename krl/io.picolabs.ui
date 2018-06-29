@@ -4,24 +4,123 @@ ruleset io.picolabs.ui {
   }
   global {
     __testing = { "queries": [ {"name": "saved_settings"} ],
-                  "events": [  ] }
-    saved_settings = function(){
+                  "events": [ {"domain" : "picolabs_ui", "type" : "update_settings_tab", "attrs" : ["picoID", "tab"] } ] }
+    saved_settings = function() {
       ent:settings.defaultsTo({})
+    }
+
+    format_settings_entry = function(picoID, DID, host, position, tab, collapsed) {
+      {
+        "picoID": picoID,
+        "DID": DID,
+        "host": host,
+        "collapsed": collapsed.defaultsTo(true),
+        "position": position || { "x": 0, "y": 0 },
+        "tab": tab || 0
+      }
     }
   }//end global
 
   rule initialize {
     select when wrangler ruleset_added where event:attr("rids") >< meta:rid
     always{
-      ent:settings := {}.put([meta:picoId], {
-        "picoID": meta:picoId,
-        "DID": meta:eci,
-        "host": meta:host,
-        "collapsed": true,
-        "position": {"x": 0, "y": 0},
-        "tab": 1
-      }) if not ent:settings
+      ent:settings{[meta:picoId]} := format_settings_entry(meta:picoId, meta:eci, meta:host) if (not ent:settings || not ent:settings{[meta:picoId]}) //this guard statement prevents overwriting the entry pico's setting variable being overwritten, and also prevents accidentally removing the entry pico from view
     }
   }
 
+  rule addSettingsEntry {
+    select when picolabs_ui new_settings_entry
+    pre{
+      picoID = event:attr("picoID");
+      DID = event:attr("DID");
+      host = event:attr("host");
+      position = event:attr("position");
+    }
+    if picoID && DID && host then
+      send_directive("adding pico " + picoID + " to settings")
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
+    }
+  }
+
+
+  rule updateSettingsPosition {
+    select when picolabs_ui update_settings_position
+    pre{
+      picoID = event:attr("picoID");
+      DID = ent:settings{[picoID, "DID"]};
+      host = ent:settings{[picoID, "host"]};
+      tab = ent:settings{[picoID, "tab"]};
+      collapsed = ent:settings{[picoID, "collapsed"]};
+      position = { "x" : event:attr("x").as("Number"), "y" : event:attr("y").as("Number") };
+    }
+    if picoID && position then
+      noop()
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position, tab, collapsed)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
+    }
+  }
+
+  rule updateSettingsCollapsed {
+    select when picolabs_ui update_settings_collapsed
+    pre{
+      picoID = event:attr("picoID");
+      DID = ent:settings{[picoID, "DID"]};
+      host = ent:settings{[picoID, "host"]};
+      tab = ent:settings{[picoID, "tab"]};
+      collapsed = event:attr("collapsed").as("Boolean");
+      position = ent:settings{[picoID, "position"]};
+
+    }
+    if picoID && not collapsed.isnull() then
+      noop()
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position, tab, collapsed)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
+    }
+  }
+
+  rule updateSettingsTab {
+    select when picolabs_ui update_settings_tab
+    pre{
+      picoID = event:attr("picoID");
+      DID = ent:settings{[picoID, "DID"]};
+      host = ent:settings{[picoID, "host"]};
+      tab = event:attr("tab").as("Number");
+      collapsed = ent:settings{[picoID, "collapsed"]};
+      position = ent:settings{[picoID, "position"]};
+
+    }
+    if picoID && not tab.isnull() then
+      noop()
+    fired{
+      ent:settings{[picoID]} := format_settings_entry(picoID, DID, host, position, tab, collapsed)
+    }else{
+      raise picolabs_ui event "failed_entry_addition"
+        attributes event:attrs
+    }
+  }
+
+  rule deleteSettingsEntry {
+    select when picolabs_ui removed_settings_entry
+    pre{
+      picoID = event:attr("picoID");
+    }
+    if picoID && picoID != meta:picoId then //don't remove the entry pico from view...
+      send_directive("deleting pico " + picoID + " from settings")
+    fired{
+      clear ent:settings{[picoID]}
+    }else{
+      raise picolabs_ui event "failed_entry_removal"
+      attributes event:attrs
+    }
+  }
 }//end ruleset

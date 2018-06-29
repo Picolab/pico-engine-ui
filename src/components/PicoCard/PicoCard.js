@@ -5,7 +5,7 @@ import ExpandedPico from './ExpandedPico';
 import CollapsedPico from './CollapsedPico';
 import Draggable from 'react-draggable';
 import { isCollapsed, getPosition, getName, getDID, getHost } from '../../reducers';
-import { retrieveName } from '../../actions';
+import { retrieveName, removePicoFromView, importChildren, importSubs, updateSettingsPosition, updateSettingsCollapsed } from '../../actions';
 import './PicoCard.css';
 
 class PicoCard extends Component {
@@ -16,6 +16,8 @@ class PicoCard extends Component {
     }
     this.toggleCard = this.toggleCard.bind(this);
     this.onStop = this.onStop.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentWillMount() {
@@ -25,32 +27,51 @@ class PicoCard extends Component {
     }
   }
 
+  componentDidMount() {
+    this.setState({
+      collapsed: this.props.collapsed
+    })
+  }
+
   toggleCard() {
     //send an event to save the state..
+    this.props.updateSettingsCollapsed(this.props.picoID, !this.state.collapsed)
+
     this.setState({
       collapsed: !this.state.collapsed
     })
   }
 
   onStop(e, data) {
-    // console.log("event:", e);
-    // console.log("data:", data);
+    let x = data.x;
+    let y = data.y;
+    this.props.updateSettingsPosition(this.props.picoID, x, y);
+  }
+
+  //NOTE: if the event is a double click, this function is called twice. There is no such thing as onSingleClick
+  handleClick(e) {
+    if(e.shiftKey){
+      this.props.removeFromView(this.props.DID, this.props.picoID, this.props.host);
+    }
+  }
+
+  handleDoubleClick(e) {
+    this.props.retrieveChildren(this.props.DID, this.props.picoID, this.props.name, this.props.host);
+    this.props.retrieveSubs(this.props.DID, this.props.picoID, this.props.name, this.props.host);
   }
 
   render() {
     let position = this.props.position.toJS();
     return (
-      <div>
-        <Draggable
-          onStop={this.onStop}
-          bounds=".scrollableView"
-          defaultPosition={position}>
-          <div className="cardContainer">
-            {!this.state.collapsed && <ExpandedPico picoID={this.props.picoID} collapse={this.toggleCard}/>}
-            {this.state.collapsed && <CollapsedPico name={this.props.name || "Loading..."} expand={this.toggleCard}/>}
-          </div>
-        </Draggable>
-      </div>
+      <Draggable
+        onStop={this.onStop}
+        bounds=".scrollableView"
+        defaultPosition={position}>
+        <div className="cardContainer" onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
+          {!this.state.collapsed && <ExpandedPico picoID={this.props.picoID} collapse={this.toggleCard}/>}
+          {this.state.collapsed && <CollapsedPico picoID={this.props.picoID} expand={this.toggleCard}/>}
+        </div>
+      </Draggable>
     );
   }
 }
@@ -60,6 +81,7 @@ PicoCard.propTypes = {
   collapsed: PropTypes.bool.isRequired,
   DID: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
+  removeFromView: PropTypes.func.isRequired,
   name: PropTypes.string
 }
 
@@ -73,10 +95,27 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
+
+
 const mapDispatchToProps = (dispatch) => {
   return {
     retrievePicoName: (DID, picoID, host) => {
       dispatch(retrieveName(DID, picoID, host));
+    },
+    removeFromView: (DID, picoID, host) => {
+      dispatch(removePicoFromView(DID, picoID, host));
+    },
+    retrieveChildren: (DID, picoID, picoName, host) => {
+      dispatch(importChildren(DID, picoID, picoName, host));
+    },
+    updateSettingsPosition: (picoID, x, y) => {
+      dispatch(updateSettingsPosition(picoID, x, y));
+    },
+    updateSettingsCollapsed: (picoID, collapsed) => {
+      dispatch(updateSettingsCollapsed(picoID, collapsed));
+    },
+    retrieveSubs: (DID, picoID, picoName, host) => {
+      dispatch(importSubs(DID, picoID, picoName, host));
     }
   }
 }

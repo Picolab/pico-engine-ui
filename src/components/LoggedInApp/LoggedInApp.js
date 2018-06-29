@@ -5,6 +5,7 @@ import PicoGrid from '../PicoGrid/PicoGrid';
 import Header from '../Header/Header';
 import { installUIRuleset } from '../../utils/picoSDK';
 import { retrieveSettings } from '../../actions';
+import SnackbarQueue from '../SnackbarQueue/SnackbarQueue';
 import Sidebar from '../Sidebar/Sidebar.js';
 import './LoggedInApp.css';
 
@@ -29,7 +30,7 @@ class LoggedInApp extends Component {
   loadSettings() {
     let installPromise = installUIRuleset(this.props.entryDID, this.props.entryHost);
     installPromise.then((resp) => {
-      this.props.retrieveSettings(this.props.entryDID, this.props.entryHost);
+      this.props.retrieveSettings();
     }).catch((error) => {
       console.error(error);
     })
@@ -43,6 +44,7 @@ class LoggedInApp extends Component {
         </div>
         <Sidebar handle={this.sidebarHandle} sidebarOpen={this.state.sidebarOpen} />
         <PicoGrid />
+        <SnackbarQueue />
       </div>
     );
   }
@@ -60,8 +62,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    retrieveSettings: (DID, host) => {
-      dispatch(retrieveSettings(DID, host))
+    retrieveSettings: () => {
+      dispatch(retrieveSettings())
     }
   }
 }

@@ -5,16 +5,21 @@ import Overview from './Overview';
 import Channels from './Channels';
 import Logs from './Logs';
 import PicoCardHeader from './PicoCardHeader';
+import ImportSubs from './ImportSubs';
+import ImportChildren from './ImportChildren';
+import RemoveFromView from './RemoveFromView';
+import UnfoldButton from './UnfoldButton';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import SwipeableViews from 'react-swipeable-views';
+import { updateSettingsTab } from '../../actions';
 import { withStyles } from '@material-ui/core/styles';
+import { getTab } from '../../reducers';
 import './PicoCard.css';
 
 const tabsEnum = Object.freeze({
@@ -44,7 +49,14 @@ class ExpandedPico extends Component {
     this.handleTabChange = this.handleTabChange.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      headerIndex: this.state.headerIndex
+    });
+  }
+
   handleTabChange(event, value) {
+    this.props.updateSettingsTab(this.props.picoID, value);
     this.setState({
       headerIndex: value
     })
@@ -80,7 +92,10 @@ class ExpandedPico extends Component {
 
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary" onClick={this.props.collapse}>Collapse</Button>
+            <UnfoldButton onClick={this.props.collapse} type="Collapse"/>
+            <ImportSubs picoID={this.props.picoID}/>
+            <ImportChildren picoID={this.props.picoID}/>
+            <RemoveFromView picoID={this.props.picoID}/>
           </CardActions>
         </Card>
       </div>
@@ -90,16 +105,22 @@ class ExpandedPico extends Component {
 
 ExpandedPico.propTypes = {
   picoID: PropTypes.string.isRequired,
-  collapse: PropTypes.func.isRequired
+  collapse: PropTypes.func.isRequired,
+  headerIndex: PropTypes.number.isRequired
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    headerIndex: getTab(state, ownProps.picoID)
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    updateSettingsTab: (picoID, tab) => {
+      dispatch(updateSettingsTab(picoID, tab));
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(null, { withTheme: true})(ExpandedPico));
