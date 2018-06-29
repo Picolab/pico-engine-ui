@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { removeSettingsEntry, getPicoId } from '../utils/picoSDK';
 import { getEntryDID, getEntryHost } from '../config';
-import { retrieveSettings } from '../actions';
+import { retrieveSettings, addSnackbarMessage } from '../actions';
 
 export default function* removePicoFromView(action) {
   if(action.payload && action.payload.DID && action.payload.host && action.payload.picoID) {
@@ -15,7 +15,7 @@ export default function* removePicoFromView(action) {
           yield call(removeSettingsEntry, getEntryDID(), getEntryHost(), action.payload.picoID);
           yield put(retrieveSettings());
         }else {
-          alert("You cannot remove the entry pico from view!")
+          yield put(addSnackbarMessage("You cannot remove the entry pico from view!"));
         }
       }else {
         console.error("Malformed response in removePicoFromView! Expected entryPicoID to be a string, received:", entryPicoID);

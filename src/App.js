@@ -3,6 +3,7 @@ import { isLoggedIn, setEntryDID, setEntryHost, getEntryDID, getEntryHost } from
 import LoggedInApp from './components/LoggedInApp/LoggedInApp.js';
 import StartPage from './components/StartPage/StartPage.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { fromJS } from 'immutable';
 import './App.css';
 
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -16,9 +17,13 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 
 import { Map } from 'immutable';
+import uuidv4 from 'uuid/v4';
 
 const initialState = Map({
-  //"version": "Not Yet Retrieved"
+  snackbarQueue: fromJS([{
+    message: "Welcome to Pico DevTools!",
+    key: uuidv4()
+  }])
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -2,10 +2,10 @@ import { call, select, put } from 'redux-saga/effects';
 import { getSubs, getPicoId, newSettingsEntry } from '../utils/picoSDK';
 import { getSettings } from '../reducers';
 import { getEntryDID, getEntryHost } from '../config';
-import { retrieveSettings } from '../actions';
+import { retrieveSettings, addSnackbarMessage } from '../actions';
 
 export default function* importSubs(action) {
-  if(action.payload && action.payload.DID && action.payload.host) {
+  if(action.payload && action.payload.DID && action.payload.picoID && action.payload.picoName && action.payload.host) {
     try {
       //query for subscriptions
       const result = yield call(getSubs, action.payload.DID, action.payload.host);
@@ -34,11 +34,15 @@ export default function* importSubs(action) {
             console.error(e);
           }
         }
-        //update the settings variable if new entries were added
-        if(newEntries > 0) {
-          yield put(retrieveSettings());
-        }else {
-          alert("All subscribed picos are already displayed!");
+        if(subs.length === 0) {
+          yield put(addSnackbarMessage(action.payload.picoName + " has no subscriptions to display."));
+        }else{
+          //update the settings variable if new entries were added
+          if(newEntries > 0) {
+            yield put(retrieveSettings());
+          }else {
+            yield put(addSnackbarMessage("All the subscriptions of " + action.payload.picoName + " are already in view."));
+          }
         }
       }else{
         console.error("Malformed response in importSubs saga! Expected array in data, instead got", subs);

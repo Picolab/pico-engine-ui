@@ -47,8 +47,8 @@ class PicoCard extends Component {
   }
 
   handleDoubleClick(e) {
-    this.props.retrieveChildren(this.props.DID, this.props.picoID, this.props.host);
-    this.props.retrieveSubs(this.props.DID, this.props.picoID, this.props.host);
+    this.props.retrieveChildren(this.props.DID, this.props.picoID, this.props.name, this.props.host);
+    this.props.retrieveSubs(this.props.DID, this.props.picoID, this.props.name, this.props.host);
   }
 
   render() {
@@ -94,11 +94,11 @@ const mapDispatchToProps = (dispatch) => {
     removeFromView: (DID, picoID, host) => {
       dispatch(removePicoFromView(DID, picoID, host));
     },
-    retrieveChildren: (DID, picoID, host) => {
-      dispatch(importChildren(DID, picoID, host));
+    retrieveChildren: (DID, picoID, picoName, host) => {
+      dispatch(importChildren(DID, picoID, picoName, host));
     },
-    retrieveSubs: (DID, picoID, host) => {
-      dispatch(importSubs(DID, picoID, host));
+    retrieveSubs: (DID, picoID, picoName, host) => {
+      dispatch(importSubs(DID, picoID, picoName, host));
     }
   }
 }

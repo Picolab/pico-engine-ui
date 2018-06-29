@@ -2,10 +2,10 @@ import { call, select, put } from 'redux-saga/effects';
 import { getChildren, newSettingsEntry } from '../utils/picoSDK';
 import { getSettings } from '../reducers';
 import { getEntryDID, getEntryHost } from '../config';
-import { retrieveSettings } from '../actions';
+import { retrieveSettings, addSnackbarMessage } from '../actions';
 
 export default function* importChildren(action) {
-  if(action.payload && action.payload.DID && action.payload.host) {
+  if(action.payload && action.payload.DID && action.payload.picoID && action.payload.picoName && action.payload.host) {
     try {
       //query for wrangler children
       const result = yield call(getChildren, action.payload.DID, action.payload.host);
@@ -22,11 +22,15 @@ export default function* importChildren(action) {
             yield call(newSettingsEntry, getEntryDID(), getEntryHost(), child.id, child.eci, action.payload.host);
           }//else it already exists in our app
         }
-        //update the application settings variable by dispatching the retrieveSettings action
-        if(newEntries > 0) {
-          yield put(retrieveSettings());
-        }else {
-          alert("All child picos are already displayed!");
+        if(children.length === 0) {
+          yield put(addSnackbarMessage(action.payload.picoName + " has no children to display."));
+        }else{
+          //update the application settings variable by dispatching the retrieveSettings action
+          if(newEntries > 0) {
+            yield put(retrieveSettings());
+          }else {
+            yield put(addSnackbarMessage("All the children of " + action.payload.picoName + " are already in view."));
+          }
         }
       }else {
         console.error("data in result does not contain an array (importChildren saga)! data:", children);

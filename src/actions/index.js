@@ -29,23 +29,25 @@ export function retrieveName(DID, picoID, host) {
   }
 }
 
-export function importChildren(DID, picoID, host) {
+export function importChildren(DID, picoID, picoName, host) {
   return {
     type: ActionTypes.IMPORT_CHILDREN,
     payload: {
       DID,
       picoID,
+      picoName,
       host
     }
   }
 }
 
-export function importSubs(DID, picoID, host) {
+export function importSubs(DID, picoID, picoName, host) {
   return {
     type: ActionTypes.IMPORT_SUBS,
     payload: {
       DID,
       picoID,
+      picoName,
       host
     }
   }
@@ -62,13 +64,32 @@ export function removePicoFromView(DID, picoID, host) {
   }
 }
 
+//parameter specs for this function are defined in index.js in the reducers folder
+export function addSnackbarMessage(message, action) {
+  return {
+    type: ActionTypes.ADD_SNACKBAR,
+    payload: {
+      message,
+      action
+    }
+  }
+}
+
+export function shiftSnackbarQueue() {
+  return {
+    type: ActionTypes.SHIFT_SNACKBAR
+  }
+}
+
 const ActionTypes = {
   RETRIEVE_VERSION: 'retrieve_version',
   RETRIEVE_SETTINGS: 'retrieve_settings',
   RETRIEVE_PICO_NAME: 'retrieve_pico_name',
   IMPORT_CHILDREN: 'import_children',
   IMPORT_SUBS: 'import_subs',
-  REMOVE_FROM_VIEW: 'remove_from_view'
+  REMOVE_FROM_VIEW: 'remove_from_view',
+  ADD_SNACKBAR: 'add_snackbar',
+  SHIFT_SNACKBAR: 'shift_snackbar'
 }
 
 export default ActionTypes;

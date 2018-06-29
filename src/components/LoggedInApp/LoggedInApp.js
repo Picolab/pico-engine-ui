@@ -5,6 +5,7 @@ import PicoGrid from '../PicoGrid/PicoGrid';
 import Header from '../Header/Header';
 import { installUIRuleset } from '../../utils/picoSDK';
 import { retrieveSettings } from '../../actions';
+import SnackbarQueue from '../SnackbarQueue/SnackbarQueue';
 import './LoggedInApp.css';
 
 class LoggedInApp extends Component {
@@ -26,6 +27,7 @@ class LoggedInApp extends Component {
       <div>
         <Header />
         <PicoGrid />
+        <SnackbarQueue />
       </div>
     );
   }

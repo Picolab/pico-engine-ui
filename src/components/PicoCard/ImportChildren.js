@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { importChildren } from '../../actions';
-import { getDID, getHost } from '../../reducers';
+import { getDID, getHost, getName } from '../../reducers';
 
 import IconButton from '@material-ui/core/IconButton';
 import People from '@material-ui/icons/People';
@@ -34,7 +34,7 @@ class ImportChildren extends Component {
   }
 
   handleClick() {
-    this.props.retrieveChildren(this.props.DID, this.props.picoID, this.props.host);
+    this.props.retrieveChildren(this.props.DID, this.props.picoID, this.props.name, this.props.host);
   }
 
   render() {
@@ -62,6 +62,7 @@ ImportChildren.propTypes = {
   picoID: PropTypes.string.isRequired,
   DID: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
+  name: PropTypes.string, //name may not be initially loaded!
   retrieveChildren: PropTypes.func.isRequired
 }
 
@@ -69,13 +70,14 @@ const mapStateToProps = (state, ownProps) => {
   return {
     DID: getDID(state, ownProps.picoID),
     host: getHost(state, ownProps.picoID),
+    name: getName(state, ownProps.picoID)
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    retrieveChildren: (DID, picoID, host) => {
-      dispatch(importChildren(DID, picoID, host));
+    retrieveChildren: (DID, picoID, picoName, host) => {
+      dispatch(importChildren(DID, picoID, picoName, host));
     }
   }
 }
