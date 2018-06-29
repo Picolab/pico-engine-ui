@@ -53,6 +53,38 @@ export function importSubs(DID, picoID, picoName, host) {
   }
 }
 
+
+export function updateSettingsPosition(picoID, x, y) {
+  return {
+    type: ActionTypes.UPDATE_POSITION,
+    payload: {
+      picoID,
+      x,
+      y
+    }
+  }
+}
+
+export function updateSettingsCollapsed(picoID, collapsed) {
+  return {
+    type: ActionTypes.UPDATE_COLLAPSED,
+    payload: {
+      picoID,
+      collapsed
+    }
+  }
+}
+
+export function updateSettingsTab(picoID, tab) {
+  return {
+    type: ActionTypes.UPDATE_TAB,
+    payload: {
+      picoID,
+      tab
+    }
+  }
+}
+
 export function removePicoFromView(DID, picoID, host) {
   return {
     type: ActionTypes.REMOVE_FROM_VIEW,
@@ -89,7 +121,10 @@ const ActionTypes = {
   IMPORT_SUBS: 'import_subs',
   REMOVE_FROM_VIEW: 'remove_from_view',
   ADD_SNACKBAR: 'add_snackbar',
-  SHIFT_SNACKBAR: 'shift_snackbar'
+  SHIFT_SNACKBAR: 'shift_snackbar',
+  UPDATE_POSITION: 'update_position',
+  UPDATE_COLLAPSED: 'update_collapsed',
+  UPDATE_TAB: 'update_tab'
 }
 
 export default ActionTypes;

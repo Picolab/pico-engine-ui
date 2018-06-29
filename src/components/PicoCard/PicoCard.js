@@ -5,7 +5,7 @@ import ExpandedPico from './ExpandedPico';
 import CollapsedPico from './CollapsedPico';
 import Draggable from 'react-draggable';
 import { isCollapsed, getPosition, getName, getDID, getHost } from '../../reducers';
-import { retrieveName, removePicoFromView, importChildren, importSubs } from '../../actions';
+import { retrieveName, removePicoFromView, importChildren, importSubs, updateSettingsPosition, updateSettingsCollapsed } from '../../actions';
 import './PicoCard.css';
 
 class PicoCard extends Component {
@@ -27,16 +27,25 @@ class PicoCard extends Component {
     }
   }
 
+  componentDidMount() {
+    this.setState({
+      collapsed: this.props.collapsed
+    })
+  }
+
   toggleCard() {
     //send an event to save the state..
+    this.props.updateSettingsCollapsed(this.props.picoID, !this.state.collapsed)
+
     this.setState({
       collapsed: !this.state.collapsed
     })
   }
 
   onStop(e, data) {
-    // console.log("event:", e);
-    // console.log("data:", data);
+    let x = data.x;
+    let y = data.y;
+    this.props.updateSettingsPosition(this.props.picoID, x, y);
   }
 
   //NOTE: if the event is a double click, this function is called twice. There is no such thing as onSingleClick
@@ -86,6 +95,8 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
+
+
 const mapDispatchToProps = (dispatch) => {
   return {
     retrievePicoName: (DID, picoID, host) => {
@@ -96,6 +107,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     retrieveChildren: (DID, picoID, picoName, host) => {
       dispatch(importChildren(DID, picoID, picoName, host));
+    },
+    updateSettingsPosition: (picoID, x, y) => {
+      dispatch(updateSettingsPosition(picoID, x, y));
+    },
+    updateSettingsCollapsed: (picoID, collapsed) => {
+      dispatch(updateSettingsCollapsed(picoID, collapsed));
     },
     retrieveSubs: (DID, picoID, picoName, host) => {
       dispatch(importSubs(DID, picoID, picoName, host));

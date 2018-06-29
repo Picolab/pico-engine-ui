@@ -22,7 +22,7 @@ export default rootReducer;
       DID: <DID>,
       host: <host>,//this variable will be removed when we implement sovrin lookups
       collapsed: <boolean>, //whether or not the card is expanded or minimized
-      position: {
+      position: {   //position in state is only in sync with position saved in pico when page is loaded
         x: <number>,
         y: <number>
       },
