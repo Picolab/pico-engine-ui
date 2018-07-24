@@ -2,14 +2,23 @@ import { combineReducers } from 'redux-immutable';
 import settingsReducer from './settingsReducer';
 import picosReducer from './picosReducer';
 import snackbarQueueReducer from './snackbarQueueReducer';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
+/*
 const rootReducer = combineReducers({
   settings: settingsReducer,
   picos: picosReducer,
   snackbarQueue: snackbarQueueReducer
 });
+*/
 
+const rootReducer = (state = Map({}), action) => {
+  return new Map({
+  settings: settingsReducer(state.settings, action),
+  picos: picosReducer(state.picos, action),
+  snackbarQueue: snackbarQueueReducer(state.snackbarQueue, action)
+  })
+}
 export default rootReducer;
 
 /* REMINDER, the redux store is not a normal javascript object, but rather an Immutable JS Map.
@@ -91,9 +100,13 @@ export function getTab(state, picoID) {
 export function getPicoIDList(state){
   let settings = state.get("settings");
   let returnList = [];
-  settings.forEach((value, key) => {
-    returnList.push(key);
-  });
+  if (Map.isMap(settings)) {
+    settings.forEach((value, key) => {
+      returnList.push(key);
+    });
+  } else {
+    console.log("settings retrieved badly, this function got: ", settings);
+  }
   return List(returnList);
 }
 
