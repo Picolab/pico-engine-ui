@@ -40,11 +40,10 @@ class StartPage extends Component {
         <Card className="loginCard">
           <CardMedia
             className="loginPic"
-            image={logo}
             title="PicoLabs UI"
-          />
-          <CardContent>
-            <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+            image={logo}/>
+          <CardContent className="loginForm">
+            <form noValidate autoComplete="off" onSubmit={this.handleSubmit} className="loginForm">
               <TextField
                 className="loginInput"
                 id="DID"

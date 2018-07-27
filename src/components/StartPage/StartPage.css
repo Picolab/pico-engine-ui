@@ -1,6 +1,8 @@
 .loginPic {
-  background-size: auto !important;
+  background-size: contain !important;
   height: 0;
+  margin: 7%;
+  margin-bottom: 0%;
   padding-top: 33.25%;
 }
 
@@ -22,4 +24,8 @@
 
 .loginSubmit{
   margin-top: 10px !important;
+}
+
+.loginForm {
+  padding-top: 0px !important;
 }

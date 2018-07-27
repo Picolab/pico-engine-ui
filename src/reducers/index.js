@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux-immutable';
 import settingsReducer from './settingsReducer';
 import picosReducer from './picosReducer';
 import snackbarQueueReducer from './snackbarQueueReducer';
