@@ -13,9 +13,9 @@ const rootReducer = combineReducers({
 
 const rootReducer = (state = Map({}), action) => {
   return new Map({
-  settings: settingsReducer(state.settings, action),
-  picos: picosReducer(state.picos, action),
-  snackbarQueue: snackbarQueueReducer(state.snackbarQueue, action)
+  settings: settingsReducer(state.get("settings"), action),
+  picos: picosReducer(state.get("picos"), action),
+  snackbarQueue: snackbarQueueReducer(state.get("snackbarQueue"), action)
   })
 }
 export default rootReducer;
@@ -104,7 +104,7 @@ export function getPicoIDList(state){
       returnList.push(key);
     });
   } else {
-    console.log("settings retrieved badly, this function got: ", settings);
+    console.log("settings didn't get a map, this function got: ", settings);
   }
   return List(returnList);
 }
